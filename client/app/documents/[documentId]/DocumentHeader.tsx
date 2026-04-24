@@ -6,6 +6,7 @@ import { ShareIcon, UsersIcon, HomeIcon, SaveIcon, DownloadIcon, ChevronDownIcon
 import Link from 'next/link';
 import { ShareModal } from './ShareModal';
 import { useEditorStore } from '@/app/store/use-editor-store';
+import { API_URL } from '@/lib/api';
 
 export const DocumentHeader = ({ documentId }: { documentId: string }) => {
     const { editor, remoteCursors } = useEditorStore();
@@ -23,7 +24,7 @@ export const DocumentHeader = ({ documentId }: { documentId: string }) => {
     useEffect(() => {
         const fetchDoc = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/api/docs/${documentId}`, {
+                const res = await fetch(`${API_URL}/api/docs/${documentId}`, {
                     headers: { 'Authorization': `Bearer ${token || localStorage.getItem('token')}` }
                 });
                 const data = await res.json();
@@ -117,7 +118,7 @@ export const DocumentHeader = ({ documentId }: { documentId: string }) => {
         setTitle(newTitle);
         setSaving(true);
         try {
-            await fetch(`http://localhost:5000/api/docs/${documentId}`, {
+            await fetch(`${API_URL}/api/docs/${documentId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -138,7 +139,7 @@ export const DocumentHeader = ({ documentId }: { documentId: string }) => {
         setIsPublic(newStatus);
         setSaving(true);
         try {
-            await fetch(`http://localhost:5000/api/docs/${documentId}`, {
+            await fetch(`${API_URL}/api/docs/${documentId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

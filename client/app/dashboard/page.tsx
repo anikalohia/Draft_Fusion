@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { PlusIcon, FileTextIcon, SearchIcon, Trash2Icon, LayoutDashboardIcon, SettingsIcon, LogOutIcon } from 'lucide-react';
+import { API_URL } from '@/lib/api';
 
 export default function Dashboard() {
     const { user, token, logout } = useAuth();
@@ -20,7 +21,7 @@ export default function Dashboard() {
 
         const fetchDocs = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/api/docs/user/${user?.id || JSON.parse(localStorage.getItem('user') || '{}').id}`, {
+                const res = await fetch(`${API_URL}/api/docs/user/${user?.id || JSON.parse(localStorage.getItem('user') || '{}').id}`, {
                     headers: { 'Authorization': `Bearer ${token || localStorage.getItem('token')}` }
                 });
                 const data = await res.json();
@@ -39,7 +40,7 @@ export default function Dashboard() {
 
     const createDoc = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/docs', {
+            const res = await fetch(`${API_URL}/api/docs`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -62,7 +63,7 @@ export default function Dashboard() {
         if (!confirm('Are you sure you want to delete this document?')) return;
         
         try {
-            const res = await fetch(`http://localhost:5000/api/docs/${id}`, {
+            const res = await fetch(`${API_URL}/api/docs/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token || localStorage.getItem('token')}` }
             });

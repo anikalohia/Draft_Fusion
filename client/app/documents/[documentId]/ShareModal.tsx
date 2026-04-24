@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import { XIcon, LinkIcon, CopyIcon, Trash2Icon, UserPlusIcon, ShieldCheckIcon, UnlinkIcon, CheckIcon, AlertTriangleIcon } from 'lucide-react';
+import { API_URL } from '@/lib/api';
 
 interface SharedUser {
     _id: string;
@@ -45,7 +46,7 @@ export const ShareModal = ({ documentId, isOpen, onClose }: ShareModalProps) => 
 
     const fetchSharedUsers = async () => {
         try {
-            const res = await fetch(`http://localhost:5000/api/docs/${documentId}/share`, {
+            const res = await fetch(`${API_URL}/api/docs/${documentId}/share`, {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
             const data = await res.json();
@@ -62,7 +63,7 @@ export const ShareModal = ({ documentId, isOpen, onClose }: ShareModalProps) => 
         if (!email.trim()) return;
         setLoading(true);
         try {
-            const res = await fetch(`http://localhost:5000/api/docs/${documentId}/share`, {
+            const res = await fetch(`${API_URL}/api/docs/${documentId}/share`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,7 +88,7 @@ export const ShareModal = ({ documentId, isOpen, onClose }: ShareModalProps) => 
 
     const handleRemoveUser = async (userId: string) => {
         try {
-            const res = await fetch(`http://localhost:5000/api/docs/${documentId}/share/${userId}`, {
+            const res = await fetch(`${API_URL}/api/docs/${documentId}/share/${userId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
@@ -104,7 +105,7 @@ export const ShareModal = ({ documentId, isOpen, onClose }: ShareModalProps) => 
     const handleGenerateLink = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`http://localhost:5000/api/docs/${documentId}/generate-link`, {
+            const res = await fetch(`${API_URL}/api/docs/${documentId}/generate-link`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
@@ -122,7 +123,7 @@ export const ShareModal = ({ documentId, isOpen, onClose }: ShareModalProps) => 
 
     const handleRevokeLink = async () => {
         try {
-            const res = await fetch(`http://localhost:5000/api/docs/${documentId}/revoke-link`, {
+            const res = await fetch(`${API_URL}/api/docs/${documentId}/revoke-link`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });

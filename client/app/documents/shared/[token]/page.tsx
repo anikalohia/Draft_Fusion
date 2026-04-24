@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/app/context/AuthContext';
 import { ShieldCheckIcon, AlertTriangleIcon, Loader2Icon } from 'lucide-react';
 import Link from 'next/link';
+import { API_URL } from '@/lib/api';
 
 export default function SharedDocumentPage() {
     const params = useParams();
@@ -24,7 +25,7 @@ export default function SharedDocumentPage() {
 
         const accessDoc = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/api/docs/shared/${shareToken}`, {
+                const res = await fetch(`${API_URL}/api/docs/shared/${shareToken}`, {
                     headers: { 'Authorization': `Bearer ${storedToken}` }
                 });
                 const data = await res.json();
