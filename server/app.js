@@ -11,10 +11,26 @@ import { authMiddleware } from './passport/authMiddleware.js';
 import { setupCollaboration } from './sockets/collaboration.js';
 
 dotenv.config();
+
+// Validate critical environment variables
+if (process.env.NODE_ENV === 'production') {
+    if (!process.env.MONGODB_URI) {
+        console.warn("WARNING: MONGODB_URI is not defined. Database connection will fail.");
+    }
+    if (!process.env.JWT_SECRET) {
+        console.warn("WARNING: JWT_SECRET is not defined. Authentication will fail.");
+    }
+}
+
 connectDB();
 
 const app = express();
 const server = http.createServer(app);
+
+// Health Check for Render
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
 
 const clientUrl = (process.env.CLIENT_URL || 'http://localhost:3000').replace(/\/$/, "");
 

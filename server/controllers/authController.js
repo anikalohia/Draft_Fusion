@@ -29,6 +29,9 @@ export const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, foundUser.password);
         if (!isMatch) return res.status(400).json({ success: false, message: "Invalid credentials" });
 
+        if (!process.env.JWT_SECRET) {
+            throw new Error("JWT_SECRET is not defined in environment variables");
+        }
         const token = jwt.sign({ id: foundUser._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.status(200).json({ success: true, token, user: { id: foundUser._id, username: foundUser.username, email: foundUser.email } });
     } catch (error) {
