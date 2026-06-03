@@ -15,15 +15,18 @@ connectDB();
 
 const app = express();
 const server = http.createServer(app);
+
+const clientUrl = (process.env.CLIENT_URL || 'http://localhost:3000').replace(/\/$/, "");
+
 const io = new Server(server, {
     cors: {
-        origin: process.env.CLIENT_URL || 'http://localhost:3000',
+        origin: clientUrl,
         methods: ["GET", "POST"]
     }
 });
 
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: clientUrl,
     credentials: true
 }));
 app.use(express.json());
