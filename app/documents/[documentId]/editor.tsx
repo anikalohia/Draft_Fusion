@@ -12,6 +12,7 @@ import { FontFamily } from '@tiptap/extension-text-style/font-family'
 import { TextStyle } from '@tiptap/extension-text-style'
 import { socket } from '@/lib/socket'
 import { useAuth } from '@/app/context/AuthContext'
+import { API_URL } from '@/lib/api'
 import { SlashCommand, suggestion } from './extensions/SlashCommand'
 import Typography from '@tiptap/extension-typography'
 
@@ -107,7 +108,7 @@ export const Editor = () => {
         debounceSaveRef.current = setTimeout(async () => {
             try {
                 const token = localStorage.getItem('token');
-                await fetch(`http://localhost:5000/api/docs/${documentId}`, {
+                await fetch(`${API_URL}/api/docs/${documentId}`, {
                     method: 'PUT',
                     headers: { 
                         'Content-Type': 'application/json',
@@ -128,7 +129,7 @@ export const Editor = () => {
         const fetchDoc = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await fetch(`http://localhost:5000/api/docs/${documentId}`, {
+                const res = await fetch(`${API_URL}/api/docs/${documentId}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const data = await res.json();

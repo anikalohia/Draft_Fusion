@@ -18,7 +18,7 @@ Draft Fusion is built on a modern full-stack architecture designed for low-laten
 
 ## 📂 Code Structure
 
-### Client (`/client`)
+### Frontend (Root)
 - **`app/`**: Next.js App Router.
   - **`documents/[id]/`**: The core editor page, including the header, toolbar, and Tiptap integration.
   - **`context/`**: Auth providers managing user sessions.
@@ -36,37 +36,10 @@ Draft Fusion is built on a modern full-stack architecture designed for low-laten
 
 ---
 
-## 🔄 Data Flow Specifics
+## 🚀 Deployment
 
-### 1. Authentication Flow
-1. **User Login:** Client sends credentials to `/api/auth/login`.
-2. **JWT Issuance:** Server verifies and returns a signed JWT.
-3. **Authorization:** The token is stored in `localStorage` and sent in the `Authorization: Bearer <token>` header for all subsequent requests.
-
-### 2. Real-time Collaboration Flow
-- **Joining:** When a user opens a document, they emit `join_document`. The server places them in a specific Socket.io room.
-- **Typing Sync:** 
-  - User A types → Tiptap `onUpdate` triggers → Socket emits `document_change`.
-  - Server broadcasts `receive_change` to all room members except User A.
-  - User B's editor receives JSON content → `editor.commands.setContent()` updates the view.
-- **Conflict Handling:** Currently uses a high-frequency broadcast with cursor position preservation to minimize overlap.
-
-### 3. Presence & Interaction Flow
-- **Typing Indicators:** Real-time `typing` events trigger a floating UI that shows who is currently active.
-- **Follow Mode:** User B clicks User A's avatar → Logic pulls User A's latest cursor index from Zustand → Editor scrolls User A's current position into view.
-
-### 4. Sharing & Permissions
-- **Granular Access:** The `Document` model tracks a `sharedWith` array.
-- **Permissions:** The `Editor` component checks the user's role (Owner, Editor, or Viewer) on load. If the role is `Viewer`, the `editor.setEditable(false)` command is triggered, locking the document.
-
----
-
-## 🌟 Advanced Features
-
-- **Slash Commands:** Type `/` inside the editor to trigger a Neobrutalism menu for headings, tables, code blocks, and lists.
-- **Export Engine:** Convert documents instantly to **PDF, Markdown, HTML, or JSON** via the Export dropdown.
-- **Markdown Shortcuts:** Support for standard markdown input (e.g., typing `### ` transforms into an H3).
-- **Auto-Save:** A 2-second debounce timer ensures all changes are persisted to MongoDB without manual saving.
+For detailed deployment instructions for Vercel and Render, please refer to:
+👉 **[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)**
 
 ---
 
@@ -87,15 +60,14 @@ Draft Fusion is built on a modern full-stack architecture designed for low-laten
    ```bash
    cd server
    npm install
-   # Create a .env file with PORT, MONGO_URI, and JWT_SECRET
+   # Create a .env file based on .env.example
    npm start
    ```
 
-3. **Setup Client**
+3. **Setup Frontend**
    ```bash
-   cd client
    npm install
-   # Create a .env.local with NEXT_PUBLIC_API_URL
+   # Create a .env file based on .env.example
    npm run dev
    ```
 
