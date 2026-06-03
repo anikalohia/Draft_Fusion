@@ -11,6 +11,7 @@ export const createDocument = async (req, res) => {
         });
         res.status(201).json({ success: true, document: newDoc });
     } catch (error) {
+        console.error("Error in document controller:", error);
         res.status(500).json({ success: false, message: error.message });
     }
 };
@@ -32,6 +33,7 @@ export const getDocument = async (req, res) => {
 
         res.status(200).json({ success: true, document: doc, isOwner });
     } catch (error) {
+        console.error("Error in document controller:", error);
         res.status(500).json({ success: false, message: error.message });
     }
 };
@@ -47,6 +49,7 @@ export const getUserDocuments = async (req, res) => {
         }).sort({ updatedAt: -1 });
         res.status(200).json({ success: true, documents: docs });
     } catch (error) {
+        console.error("Error in document controller:", error);
         res.status(500).json({ success: false, message: error.message });
     }
 };
@@ -82,6 +85,7 @@ export const updateDocument = async (req, res) => {
         const updatedDoc = await Document.findByIdAndUpdate(id, updateData, { new: true });
         res.status(200).json({ success: true, document: updatedDoc });
     } catch (error) {
+        console.error("Error in document controller:", error);
         res.status(500).json({ success: false, message: error.message });
     }
 };
@@ -92,6 +96,7 @@ export const deleteDocument = async (req, res) => {
         await Document.findByIdAndDelete(id);
         res.status(200).json({ success: true, message: "Document deleted" });
     } catch (error) {
+        console.error("Error in document controller:", error);
         res.status(500).json({ success: false, message: error.message });
     }
 };

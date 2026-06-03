@@ -15,6 +15,7 @@ export const signup = async (req, res) => {
         });
         res.status(201).json({ success: true, message: "User created" });
     } catch (error) {
+        console.error("Signup error:", error);
         res.status(400).json({ success: false, message: error.message });
     }
 };
@@ -31,6 +32,7 @@ export const login = async (req, res) => {
         const token = jwt.sign({ id: foundUser._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.status(200).json({ success: true, token, user: { id: foundUser._id, username: foundUser.username, email: foundUser.email } });
     } catch (error) {
+        console.error("Login error:", error);
         res.status(500).json({ success: false, message: error.message });
     }
 };
@@ -40,6 +42,7 @@ export const getProfile = async (req, res) => {
         const foundUser = await User.findById(req.userId).select('-password');
         res.status(200).json({ success: true, user: foundUser });
     } catch (error) {
+        console.error("Get Profile error:", error);
         res.status(500).json({ success: false, message: error.message });
     }
 };
